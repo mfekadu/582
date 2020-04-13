@@ -1,0 +1,33 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+flake8 = "*"
+black = "*"
+
+[packages]
+transformers = "==2.4"
+google = "*"
+beautifulsoup4 = "*"
+torch = "*"
+torchvision = "*"
+pdoc3 = "*"
+pyre-check = "*"
+typing-extensions = "*"
+requests = "*"
+fuzzywuzzy = "*"
+python-levenshtein = "*"
+pandas = "*"
+docopt = "*"
+termcolor = "*"
+colorama = "*"
+ansicolors = "*"
+spacy = "*"
+
+[requires]
+python_version = "3.6"
+
+[pipenv]
+allow_prereleases = true
