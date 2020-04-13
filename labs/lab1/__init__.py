@@ -10,20 +10,19 @@ The deliverable is a python3 program: robotproducer.py [input.txt]
 
 Where input.txt is a plaintext file with content similar to the following:
 
------------------
-
+```
 This is a no holds-barred thrilling drama mixed with killing, mayhem and manipulation among working professionals. This film sheds light on a man's downfall from the pinnacles of success into the depths of his damaged character. His insecurities lead him into a series of troubled romantic relationships and eventually a web of events that include betrayal and murder.
-
------------------
+```
 
 Output to the screen should be like the following;
 
+```
 Title suggestion: A crazy work week!
 
 Director suggestion: SOME NAME
 
 Cast suggestions: NAME1, NAME2, NAME3, ...
-
+```
 
 
 I was just kidding. This is actually a very difficult, cutting-edge problem. So, know that I'm not interested in perfection just interesting approaches.
