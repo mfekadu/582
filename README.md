@@ -33,21 +33,22 @@ $ python --version
 Python 3.6.8
 ```
 
-## Usage
+## Module Examples 
 
 ```python
-from lab1 import foobar
-foobar.foo("bar")
->>> 'foobar'
+from labs.lab1 import producer
+producer("bad movie overview")
+>>> {"title_suggestion": "Bad Movie", "director_suggestion": "Bad Director", "cast_suggestion": "Bad Cast"} 
+producer("good movie overview")
+>>> {"title_suggestion": "Good Movie", "director_suggestion": "Good Director", "cast_suggestion": "Good Cast"} 
 ```
 
-## Demo
+## Command-Line Usage 
 
+### Lab1
 ```
-$ python main.py
-...
-...
-...
+$ python main.py lab1 [input.txt]
+$ python robotproducer.py [input.txt]
 ```
 
 ![demo.png](./demo.png)
