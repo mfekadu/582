@@ -1,5 +1,6 @@
 models/*
 !models/*.sh
+!models/X_entities_vectorizer_feature_names.csv
 
 .vscode/*
 !.vscode/settings.json
