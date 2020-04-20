@@ -1,1 +1,2 @@
-./type_check.sh && ./make_docs.sh o && ./main.py
+#!/bin/bash
+./type_check.sh && ./make_docs.sh o && ./main.py "$@"
