@@ -27,9 +27,11 @@ Resources:
     * [docopt is cool](http://docopt.org)
 
 """
+from typing import List
+
 from docopt import docopt
 
-from labs.lab1 import producer, Suggestions, Overview
+from labs.lab1 import Overview, Suggestions, producer, FullName
 from utils.terminal_colors import print_colored_doc, print_debug
 
 
@@ -89,6 +91,7 @@ if __name__ == "__main__":
 
     for k, v in sugg.items():
         if type(v) == list:
-            print(f"{k}: ", ", ".join(v))
+            names: List[FullName] = v  # pyre-ignore[9]
+            print(f"{k}: ", ", ".join(names))
         else:
             print(f"{k}: ", v)
