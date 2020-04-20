@@ -1,4 +1,5 @@
 # 582
+
 CSC 582 Natural Language Processing
 
 ## [Documentation][1]
@@ -33,22 +34,33 @@ $ python --version
 Python 3.6.8
 ```
 
-## Module Examples 
+## Module Examples
 
 ```python
 from labs.lab1 import producer
-producer("bad movie overview")
->>> {"title_suggestion": "Bad Movie", "director_suggestion": "Bad Director", "cast_suggestion": "Bad Cast"} 
 producer("good movie overview")
->>> {"title_suggestion": "Good Movie", "director_suggestion": "Good Director", "cast_suggestion": "Good Cast"} 
+>>>
+{
+    "title": "A Good Movie Title",
+    "director": "Good Director",
+    "cast": ["Good Actress", "Good Actor"],
+}
+producer("bad movie overview")
+>>>
+{
+    "title": "A Bad Movie Title",
+    "director": "Bad Director",
+    "cast": ["Bad Actress", "Bad Actor"],
+}
 ```
 
-## Command-Line Usage 
+## Command-Line Usage
 
 ### Lab1
+
 ```
-$ python main.py lab1 [input.txt]
-$ python robotproducer.py [input.txt]
+$ python main.py lab1 inputs/in1.txt
+$ python robotproducer.py inputs/in1.txt
 ```
 
 ![demo.png](./demo.png)
@@ -56,6 +68,7 @@ $ python robotproducer.py [input.txt]
 ## How it works
 
 **Assumptions**
+
 - ...
 - ...
 
@@ -70,19 +83,18 @@ $ python robotproducer.py [input.txt]
 - [x] ...
 - [ ] ...
 
-
 ## More Details
+
 ...
 ...
 
 ## Resources
-- [**foobar**][5]
-- [**foobar**][5]
 
+- [**foobar**][5]
+- [**foobar**][5]
 
 [1]: https://mfekadu.github.io/582/
 [2]: https://pipenv.pypa.io/en/latest/install/#installing-pipenv
 [3]: https://pipenv.pypa.io/en/latest/install/#pragmatic-installation-of-pipenv
 [4]: http://python.org
 [5]: ???
-

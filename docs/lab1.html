@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.7.5" />
 <title>labs.lab1 API documentation</title>
-<meta name="description" content="Lab 1: Robot Movie Producer
-This lab is really simple. You&#39;re supposed to just answer one email! …" />
+<meta name="description" content="Lab 1: Robot Movie Producer …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
@@ -23,11 +22,19 @@ This lab is really simple. You&#39;re supposed to just answer one email! …" />
 <section id="section-intro">
 <h1 id="lab-1-robot-movie-producer">Lab 1: Robot Movie Producer</h1>
 <p>This lab is really simple. You're supposed to just answer one email!</p>
-<p>The situation is this: People have lots of ideas about movies. They can write a short synopsis of the plot. What they want to know is who should be acting in the movie? Who should direct it? And lastly, what should the title be?</p>
-<p>So, imagine you get an email (example below) that has a description of a movie. Your job is to reply back with suggestions of 5-10 actors, a director and title. That's it!</p>
+<p>The situation is this: People have lots of ideas about movies.
+They can write a short synopsis of the plot.
+What they want to know is who should be acting in the movie?
+Who should direct it?
+And lastly, what should the title be?</p>
+<p>So, imagine you get an email (example below) that has a description of a movie.
+Your job is to reply back with suggestions of 5-10 actors, a director and title.
+That's it!</p>
 <p>The deliverable is a python3 program: robotproducer.py [input.txt]</p>
 <p>Where input.txt is a plaintext file with content similar to the following:</p>
-<pre><code>This is a no holds-barred thrilling drama mixed with killing, mayhem and manipulation among working professionals. This film sheds light on a man's downfall from the pinnacles of success into the depths of his damaged character. His insecurities lead him into a series of troubled romantic relationships and eventually a web of events that include betrayal and murder.
+<pre><code>This is a no holds-barred thrilling drama mixed with killing, mayhem and manipulation among working professionals.
+This film sheds light on a man's downfall from the pinnacles of success into the depths of his damaged character.
+His insecurities lead him into a series of troubled romantic relationships and eventually a web of events that include betrayal and murder.
 </code></pre>
 <p>Output to the screen should be like the following;</p>
 <pre><code>Title suggestion: A crazy work week!
@@ -36,43 +43,64 @@ Director suggestion: SOME NAME
 
 Cast suggestions: NAME1, NAME2, NAME3, ...
 </code></pre>
-<p>I was just kidding. This is actually a very difficult, cutting-edge problem. So, know that I'm not interested in perfection just interesting approaches.</p>
+<p>I was just kidding.
+This is actually a very difficult, cutting-edge problem.
+So, know that I'm not interested in perfection just interesting approaches.</p>
 <p>Use the Kaggle database TMDB Movie metadata: <a href="https://www.kaggle.com/tmdb/tmdb-movie-metadata">https://www.kaggle.com/tmdb/tmdb-movie-metadata</a></p>
-<p>It has two data files totaling about 50MB. We are interested in three main columns (but you may use any column available, they would actually help). The three columns are: Title, Overview, Cast (only names) and Crew:Director.</p>
-<p>How to evaluate this?</p>
+<p>It has two data files totaling about 50MB.
+We are interested in three main columns (but you may use any column available, they would actually help).
+The three columns are: Title, Overview, Cast (only names) and Crew:Director.</p>
+<h1 id="how-to-evaluate-this">How to evaluate this?</h1>
 <p>The title is simply very difficult to evaluate, so that's just something I can assess based on creativity.</p>
-<p>However, the director and the cast can be numerically evaluated if you set up the problem as a machine learning exercise. Divide all the movies into training/test randomly with appropriate ratios. Then use the description (overview) of one of the test set movies as input into your program. Evaluate the output like this:</p>
+<p>However, the director and the cast can be numerically evaluated if you set up the problem as a machine learning exercise.
+Divide all the movies into training/test randomly with appropriate ratios.
+Then use the description (overview) of one of the test set movies as input into your program.
+Evaluate the output like this:</p>
 <ul>
 <li>
 <p>20 points if you get the director right. (20 max)</p>
 </li>
 <li>
-<p>10 points for every cast member that you guessed that appears on the cast list. Up to 50 maximum points.</p>
+<p>10 points for every cast member that you guessed that appears on the cast list.
+Up to 50 maximum points.</p>
 </li>
 <li>
 <p>5 points for every cast member guessed correctly that also appears on the top 5 (orders 0-4) of the cast list. (25 max)</p>
 </li>
 </ul>
 <p>Now, optimize for maximum possible score (95).</p>
-<p>Submit your code via Polylearn as a zip file. If you did this on Google Collab, you may download as Python then submit that file. In addition, to submitting the downloaded .py (from Collab), also share your collab notebook with me (foaadk@gmail.com) and submit a link via Polylearn online text.</p>
+<p>Submit your code via Polylearn as a zip file.
+If you did this on Google Collab, you may download as Python then submit that file.
+In addition, to submitting the downloaded .py (from Collab), also share your collab notebook with me (foaadk@gmail.com) and submit a link via Polylearn online text.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">&#34;&#34;&#34;
 # Lab 1: Robot Movie Producer
+
+[//]: # (markdown comment # noqa)
+
 This lab is really simple. You&#39;re supposed to just answer one email!
 
-The situation is this: People have lots of ideas about movies. They can write a short synopsis of the plot. What they want to know is who should be acting in the movie? Who should direct it? And lastly, what should the title be?
+The situation is this: People have lots of ideas about movies.
+They can write a short synopsis of the plot.
+What they want to know is who should be acting in the movie?
+Who should direct it?
+And lastly, what should the title be?
 
-So, imagine you get an email (example below) that has a description of a movie. Your job is to reply back with suggestions of 5-10 actors, a director and title. That&#39;s it!
+So, imagine you get an email (example below) that has a description of a movie.
+Your job is to reply back with suggestions of 5-10 actors, a director and title.
+That&#39;s it!
 
 The deliverable is a python3 program: robotproducer.py [input.txt]
 
 Where input.txt is a plaintext file with content similar to the following:
 
 ```
-This is a no holds-barred thrilling drama mixed with killing, mayhem and manipulation among working professionals. This film sheds light on a man&#39;s downfall from the pinnacles of success into the depths of his damaged character. His insecurities lead him into a series of troubled romantic relationships and eventually a web of events that include betrayal and murder.
+This is a no holds-barred thrilling drama mixed with killing, mayhem and manipulation among working professionals.
+This film sheds light on a man&#39;s downfall from the pinnacles of success into the depths of his damaged character.
+His insecurities lead him into a series of troubled romantic relationships and eventually a web of events that include betrayal and murder.
 ```
 
 Output to the screen should be like the following;
@@ -86,32 +114,116 @@ Cast suggestions: NAME1, NAME2, NAME3, ...
 ```
 
 
-I was just kidding. This is actually a very difficult, cutting-edge problem. So, know that I&#39;m not interested in perfection just interesting approaches.
+I was just kidding.
+This is actually a very difficult, cutting-edge problem.
+So, know that I&#39;m not interested in perfection just interesting approaches.
 
 Use the Kaggle database TMDB Movie metadata: https://www.kaggle.com/tmdb/tmdb-movie-metadata
 
-It has two data files totaling about 50MB. We are interested in three main columns (but you may use any column available, they would actually help). The three columns are: Title, Overview, Cast (only names) and Crew:Director.
+It has two data files totaling about 50MB.
+We are interested in three main columns (but you may use any column available, they would actually help).
+The three columns are: Title, Overview, Cast (only names) and Crew:Director.
 
 
-
-How to evaluate this?
+# How to evaluate this?
 
 The title is simply very difficult to evaluate, so that&#39;s just something I can assess based on creativity.
 
-However, the director and the cast can be numerically evaluated if you set up the problem as a machine learning exercise. Divide all the movies into training/test randomly with appropriate ratios. Then use the description (overview) of one of the test set movies as input into your program. Evaluate the output like this:
+However, the director and the cast can be numerically evaluated if you set up the problem as a machine learning exercise.
+Divide all the movies into training/test randomly with appropriate ratios.
+Then use the description (overview) of one of the test set movies as input into your program.
+Evaluate the output like this:
 
 + 20 points if you get the director right. (20 max)
 
-+ 10 points for every cast member that you guessed that appears on the cast list. Up to 50 maximum points.
++ 10 points for every cast member that you guessed that appears on the cast list.
+Up to 50 maximum points.
 
 + 5 points for every cast member guessed correctly that also appears on the top 5 (orders 0-4) of the cast list. (25 max)
 
-
-
 Now, optimize for maximum possible score (95).
 
-Submit your code via Polylearn as a zip file. If you did this on Google Collab, you may download as Python then submit that file. In addition, to submitting the downloaded .py (from Collab), also share your collab notebook with me (foaadk@gmail.com) and submit a link via Polylearn online text.
-&#34;&#34;&#34;</code></pre>
+Submit your code via Polylearn as a zip file.
+If you did this on Google Collab, you may download as Python then submit that file.
+In addition, to submitting the downloaded .py (from Collab), also share your collab notebook with me (foaadk@gmail.com) and submit a link via Polylearn online text.
+&#34;&#34;&#34;
+
+# flake8: noqa
+from typing import Callable, Iterator, List, NewType, Type
+
+from typing_extensions import Literal, TypedDict
+
+__pdoc__ = {}
+
+
+Overview = NewType(&#34;Overview&#34;, str)
+&#34;&#34;&#34;Overview&#34;&#34;&#34;
+__pdoc__[
+    &#34;Overview&#34;
+] = &#34;&#34;&#34;A Overview type
+Example:
+    ```
+    \&#34;\&#34;\&#34;
+    This is a no holds-barred thrilling drama mixed with killing,
+    mayhem and manipulation among working professionals.
+    This film sheds light on a man&#39;s downfall
+    from the pinnacles of success into the depths of his damaged character.
+    His insecurities lead him into a series of troubled romantic relationships
+    and eventually a web of events that include betrayal and murder.
+    \&#34;\&#34;\&#34;
+    ```
+&#34;&#34;&#34;
+
+FullName = NewType(&#34;FullName&#34;, str)
+&#34;&#34;&#34;FullName&#34;&#34;&#34;
+__pdoc__[
+    &#34;FullName&#34;
+] = &#34;&#34;&#34;A FullName type
+Example:
+    ```
+    &#34;FirstName LastName&#34;
+    ```
+&#34;&#34;&#34;
+
+Suggestions = TypedDict(
+    &#34;Suggestions&#34;, {&#34;title&#34;: str, &#34;director&#34;: FullName, &#34;cast&#34;: List[FullName]},
+)
+&#34;&#34;&#34;Suggestions&#34;&#34;&#34;
+__pdoc__[
+    &#34;Suggestions&#34;
+] = &#34;&#34;&#34;A Suggestions type.
+
+The movie production suggestions that our RobotProducer will provide.
+
+Example:
+    ```
+    {
+        &#34;title&#34;: &#34;A Good Movie Title&#34;,
+        &#34;director&#34;: &#34;Good Director&#34;,
+        &#34;cast&#34;: [&#34;Good Actress&#34;, &#34;Good Actor&#34;, ... ]
+    }
+    ```
+&#34;&#34;&#34;
+
+
+def producer(overview: Overview) -&gt; Suggestions:
+    &#34;&#34;&#34;A robot movie producer.
+
+    Args:
+        overview: an [`Overview`](#labs.lab1.Overview) string about the movie.
+
+    Returns:
+        A dictionary of [`Suggestions`](#labs.lab1.Suggestions).
+    &#34;&#34;&#34;
+    cast1 = FullName(&#34;Good Actress&#34;)
+    cast2 = FullName(&#34;Good Actor&#34;)
+    director = FullName(&#34;Good Director&#34;)
+    suggestions: Suggestions = {
+        &#34;title&#34;: &#34;A Good Movie Title&#34;,
+        &#34;director&#34;: director,
+        &#34;cast&#34;: [cast1, cast2],
+    }
+    return suggestions</code></pre>
 </details>
 </section>
 <section>
@@ -119,8 +231,108 @@ Submit your code via Polylearn as a zip file. If you did this on Google Collab, 
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="labs.lab1.FullName"><code class="name flex">
+<span>def <span class="ident">FullName</span></span>(<span>x)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A FullName type</p>
+<h2 id="example">Example</h2>
+<pre><code>&quot;FirstName LastName&quot;
+</code></pre></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def new_type(x):
+    return x</code></pre>
+</details>
+</dd>
+<dt id="labs.lab1.Overview"><code class="name flex">
+<span>def <span class="ident">Overview</span></span>(<span>x)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A Overview type</p>
+<h2 id="example">Example</h2>
+<pre><code>&quot;&quot;&quot;
+This is a no holds-barred thrilling drama mixed with killing,
+mayhem and manipulation among working professionals.
+This film sheds light on a man's downfall
+from the pinnacles of success into the depths of his damaged character.
+His insecurities lead him into a series of troubled romantic relationships
+and eventually a web of events that include betrayal and murder.
+&quot;&quot;&quot;
+</code></pre></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def new_type(x):
+    return x</code></pre>
+</details>
+</dd>
+<dt id="labs.lab1.producer"><code class="name flex">
+<span>def <span class="ident">producer</span></span>(<span>overview)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A robot movie producer.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>overview</code></strong></dt>
+<dd>an <a href="#labs.lab1.Overview"><code>Overview</code></a> string about the movie.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>A dictionary of <a href="#labs.lab1.Suggestions"><code>Suggestions</code></a>.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def producer(overview: Overview) -&gt; Suggestions:
+    &#34;&#34;&#34;A robot movie producer.
+
+    Args:
+        overview: an [`Overview`](#labs.lab1.Overview) string about the movie.
+
+    Returns:
+        A dictionary of [`Suggestions`](#labs.lab1.Suggestions).
+    &#34;&#34;&#34;
+    cast1 = FullName(&#34;Good Actress&#34;)
+    cast2 = FullName(&#34;Good Actor&#34;)
+    director = FullName(&#34;Good Director&#34;)
+    suggestions: Suggestions = {
+        &#34;title&#34;: &#34;A Good Movie Title&#34;,
+        &#34;director&#34;: director,
+        &#34;cast&#34;: [cast1, cast2],
+    }
+    return suggestions</code></pre>
+</details>
+</dd>
+</dl>
 </section>
 <section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="labs.lab1.Suggestions"><code class="flex name class">
+<span>class <span class="ident">Suggestions</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A Suggestions type.</p>
+<p>The movie production suggestions that our RobotProducer will provide.</p>
+<h2 id="example">Example</h2>
+<pre><code>{
+    &quot;title&quot;: &quot;A Good Movie Title&quot;,
+    &quot;director&quot;: &quot;Good Director&quot;,
+    &quot;cast&quot;: [&quot;Good Actress&quot;, &quot;Good Actor&quot;, ... ]
+}
+</code></pre></section>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -128,12 +340,27 @@ Submit your code via Polylearn as a zip file. If you did this on Google Collab, 
 <div class="toc">
 <ul>
 <li><a href="#lab-1-robot-movie-producer">Lab 1: Robot Movie Producer</a></li>
+<li><a href="#how-to-evaluate-this">How to evaluate this?</a></li>
 </ul>
 </div>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
 <li><code><a title="labs" href="index.html">labs</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="labs.lab1.FullName" href="#labs.lab1.FullName">FullName</a></code></li>
+<li><code><a title="labs.lab1.Overview" href="#labs.lab1.Overview">Overview</a></code></li>
+<li><code><a title="labs.lab1.producer" href="#labs.lab1.producer">producer</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="labs.lab1.Suggestions" href="#labs.lab1.Suggestions">Suggestions</a></code></h4>
+</li>
 </ul>
 </li>
 </ul>
