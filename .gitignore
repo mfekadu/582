@@ -1,3 +1,6 @@
+models/*
+!models/*.sh
+
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
