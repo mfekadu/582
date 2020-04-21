@@ -69,11 +69,16 @@ Submit your code via Polylearn as a zip file.
 If you did this on Google Collab, you may download as Python then submit that file.
 In addition, to submitting the downloaded .py (from Collab), also share your collab notebook with me (foaadk@gmail.com) and submit a link via Polylearn online text.
 """
-
 # flake8: noqa
-from typing import Callable, Iterator, List, NewType, Type
+import os
+from typing import Any, Callable, Iterator, List, NewType, Optional, Type, Union
 
+import spacy
+from sklearn.feature_extraction import DictVectorizer
 from typing_extensions import Literal, TypedDict
+
+import pandas as pd
+from utils.terminal_colors import print_debug
 
 __pdoc__ = {}
 
@@ -128,8 +133,50 @@ Example:
     ```
 """
 
+# TODO: organize this...
+VectorizedInput = Any
+VectorizedOutput = Any
+SpacyNLP = spacy.language.Language
+NLP = Union[SpacyNLP, SpacyNLP]  # Union[SpacyNLP, SomeOtherNLP]
+
+
+def _extract_entities_spacy(overview: Overview, nlp: SpacyNLP) -> List[str]:
+    """
+    Returns a list of entities inside the document using spaCy as nlp.
+    """
+    assert isinstance(nlp, spacy.language.Language), "only spacy nlp allowed"
+    doc = nlp(overview)
+    return [ent.text for ent in doc.ents]
+
+
+def _extract_entities(overview: Overview, nlp: Optional[NLP] = None) -> List[str]:
+    """
+    Returns a list of entities inside the document.
+    """
+    return _extract_entities_spacy(overview, nlp)
 
 def producer(overview: Overview) -> Suggestions:
+
+def _vectorize(overview: Overview, nlp: Optional[NLP] = None) -> VectorizedInput:
+    """
+    Returns the input transformed into one-hot vectors via DictVectorizer
+    """
+    return _vectorize_by_entities(overview, nlp)
+
+
+def _predict_director_vec(input_vector: VectorizedInput) -> VectorizedOutput:
+    """
+    Returns the predictions of the `entities_predict_director.h5` model
+    """
+    pass
+
+
+def _predict_director(overview: Overview, nlp: Optional[NLP] = None) -> str:
+    """
+    Returns a director prediction from the overview.
+    """
+    model_input = _vectorize(overview, nlp)
+    pass
     """A robot movie producer.
 
     Args:
