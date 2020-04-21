@@ -155,7 +155,49 @@ def _extract_entities(overview: Overview, nlp: Optional[NLP] = None) -> List[str
     """
     return _extract_entities_spacy(overview, nlp)
 
-def producer(overview: Overview) -> Suggestions:
+
+def _vectorize_by_entities(
+    overview: Overview, nlp: Optional[NLP] = None
+) -> VectorizedInput:
+    """This does the vectorization based on the entities inside the overview.
+    Basically creates a giant spreadsheet.
+    One-hot encoding.
+
+    Args:
+        overview: An [`Overview`](#labs.lab1.Overview) string about the movie.
+        nlp: the [`NLP`](#labs.lab1.NLP) pipeline to extract entities with. Defaults to spaCy.
+
+    Resources:
+        https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.DictVectorizer.html
+    """
+
+    entities: List[str] = _extract_entities(overview, nlp)
+
+    # TODO: normalize `entities`
+
+    vectorizer = DictVectorizer(sparse=False)
+
+    vocabulary_file = "models/vocabulary.csv"
+
+    assert os.path.isfile(
+        vocabulary_file
+    ), f"expected vocabulary file: {vocabulary_file}"
+
+    vocabulary: dict = pd.read_csv(vocabulary_file).T.to_dict()[0]
+
+    ent_map = {e: 1 for e in entities if e in vocabulary}
+
+    # in this case we only have one document: `overview`.
+    # but imagine there could be more documents, thus more predictions
+    ent_map_list: List[dict] = [ent_map]
+
+    # this encodes all numbers as one-hot arrays of binary data, again becsuse NN
+    one_hot = vectorizer.fit_transform(ent_map_list)
+
+    assert vectorizer.inverse_transform(one_hot) == ent_map_list
+
+    return one_hot
+
 
 def _vectorize(overview: Overview, nlp: Optional[NLP] = None) -> VectorizedInput:
     """
@@ -177,6 +219,11 @@ def _predict_director(overview: Overview, nlp: Optional[NLP] = None) -> str:
     """
     model_input = _vectorize(overview, nlp)
     pass
+
+
+def producer(
+    overview: Overview, nlp: Optional[NLP] = None, use_large=False
+) -> Suggestions:
     """A robot movie producer.
 
     Args:
@@ -185,6 +232,22 @@ def _predict_director(overview: Overview, nlp: Optional[NLP] = None) -> str:
     Returns:
         A dictionary of [`Suggestions`](#labs.lab1.Suggestions).
     """
+    model_name = "en_core_web_lg" if use_large else "en_core_web_sm"
+    nlp: NLP = spacy.load(model_name) if nlp == None else nlp
+
+    if not isinstance(nlp, spacy.language.Language):
+        raise NotImplementedError("non-spacy NLP is not yet implemented")
+
+    if DEBUG:
+        print_debug("model_name", model_name)
+        print_debug("nlp", nlp)
+
+    entities: List[str] = _extract_entities(overview, nlp)
+    print_debug("entities", entities) if DEBUG else None
+
+    model_output: str = _predict_director(overview, nlp)
+    print_debug("model_output", model_output) if DEBUG else None
+
     cast1 = FullName("Good Actress")
     cast2 = FullName("Good Actor")
     director = FullName("Good Director")
