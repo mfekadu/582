@@ -77,6 +77,7 @@ from typing_extensions import Literal, TypedDict
 
 __pdoc__ = {}
 
+DEBUG = False
 
 Overview = NewType("Overview", str)
 """Overview"""

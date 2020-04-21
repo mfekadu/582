@@ -31,7 +31,8 @@ from typing import List
 
 from docopt import docopt
 
-from labs.lab1 import Overview, Suggestions, producer, FullName
+from labs import lab1
+from labs.lab1 import FullName, Overview, Suggestions, producer
 from utils.terminal_colors import print_colored_doc, print_debug
 
 
@@ -87,7 +88,9 @@ if __name__ == "__main__":
 
     overview: Overview = Overview(overview)
 
-    sugg: Suggestions = producer(overview)
+    lab1.DEBUG = DEBUG
+
+    sugg: Suggestions = producer(overview, use_large=False)
 
     for k, v in sugg.items():
         if type(v) == list:
