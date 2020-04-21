@@ -1,6 +1,6 @@
 models/*
 !models/*.sh
-!models/X_entities_vectorizer_feature_names.csv
+!models/vocabulary.csv
 
 .vscode/*
 !.vscode/settings.json
