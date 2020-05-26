@@ -26,6 +26,9 @@ colorama = "*"
 ansicolors = "*"
 spacy = "*"
 sklearn = "*"
+keras = "*"
+numpy = "*"
+tensorflow = "*"
 
 [requires]
 python_version = "3.6"

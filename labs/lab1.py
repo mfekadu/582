@@ -71,14 +71,29 @@ In addition, to submitting the downloaded .py (from Collab), also share your col
 """
 # flake8: noqa
 import os
-from typing import Any, Callable, Iterator, List, NewType, Optional, Type, Union
+from typing import (
+    Any,
+    Callable,
+    Iterator,
+    List,
+    NewType,
+    Optional,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
+from keras.models import load_model
+import numpy as np
+import pandas as pd
+import sklearn
 import spacy
 from sklearn.feature_extraction import DictVectorizer
 from typing_extensions import Literal, TypedDict
 
-import pandas as pd
 from utils.terminal_colors import print_debug
+
 
 __pdoc__ = {}
 
@@ -133,32 +148,105 @@ Example:
     ```
 """
 
-# TODO: organize this...
-VectorizedInput = Any
-VectorizedOutput = Any
+
+# TODO: organize this && make better types
+NumpyArray = Any  # np.ndarray
+OneHot = List[List[int]]
+VectorizedInput = Any  # List[int]
+VectorizedOutput = Any  # List[int]  # Union[List[int], NumpyArray]
 SpacyNLP = spacy.language.Language
-NLP = Union[SpacyNLP, SpacyNLP]  # Union[SpacyNLP, SomeOtherNLP]
+NLP = Union[SpacyNLP]  # Union[SpacyNLP, SomeOtherNLP]
+Vectorizer = Union[DictVectorizer]
+
+
+def _is_spacy(nlp: Any):
+    """
+    Return True if the given object is an instance of the SpaCy NLP pipeline, else False.
+    """
+    return isinstance(nlp, spacy.language.Language)
 
 
 def _extract_entities_spacy(overview: Overview, nlp: SpacyNLP) -> List[str]:
     """
     Returns a list of entities inside the document using spaCy as nlp.
     """
-    assert isinstance(nlp, spacy.language.Language), "only spacy nlp allowed"
+    assert _is_spacy(nlp), "only spacy nlp allowed"
     doc = nlp(overview)
     return [ent.text for ent in doc.ents]
 
 
-def _extract_entities(overview: Overview, nlp: Optional[NLP] = None) -> List[str]:
+def _extract_entities(overview: Overview, nlp: NLP) -> List[str]:
     """
     Returns a list of entities inside the document.
     """
-    return _extract_entities_spacy(overview, nlp)
+    if _is_spacy(nlp):
+        spacy_nlp: SpacyNLP = cast(SpacyNLP, nlp)  # pyre-ignore[22]
+        return _extract_entities_spacy(overview, spacy_nlp)
+    else:
+        raise NotImplementedError("non-spacy NLP is not yet implemented")
 
 
-def _vectorize_by_entities(
-    overview: Overview, nlp: Optional[NLP] = None
-) -> VectorizedInput:
+def _file_exists(filename: str):
+    return os.path.isfile(filename)
+
+
+def _assert_file_exists(filename: str, msg: Optional[str] = None):
+    msg = msg or f"expected file: {filename}"
+    assert _file_exists(filename), msg
+
+
+def _csv_to_dict(filename: str):
+    """
+    Example:
+        **consider the following CSV**
+
+         ,the 22nd century, the moon pandora
+        0,7995            , 8373
+
+        **example output**
+        {
+            "the 22nd century": 7995,
+            "the moon pandora": 8373
+        }
+    """
+    return pd.read_csv(filename).T.to_dict()[0]
+
+
+def _get_vocabulary(vocab_csv_file: Optional[str] = None) -> dict:
+    """
+    TODO: ...
+    FIXME: pd.read_csv is not memory efficient vs using `import csv`
+    """
+    vocabulary_file = vocab_csv_file or "models/vocabulary.csv"
+    _assert_file_exists(vocabulary_file)
+    vocabulary: dict = _csv_to_dict(vocabulary_file)
+    return vocabulary
+
+
+def _make_entity_vectorizer(
+    entities: List[str], vocab_csv_file: Optional[str] = None
+) -> Tuple[OneHot, Vectorizer]:
+    """
+    TODO: ...
+
+    >>> one_hot
+    array([[0., 1., 0.],
+           [1., 0., 1.]])
+    """
+    vocabulary = _get_vocabulary(vocab_csv_file)
+    # in this case we only have one document: `overview`,
+    # but imagine there could be more documents, thus more predictions.
+    # the value of each entity is 1 because one-hot vectors
+    ent_map = {e: 1 for e in entities if e in vocabulary}
+    ent_map_list: List[dict] = [ent_map]
+    vectorizer = DictVectorizer(sparse=False)
+    # this encodes all numbers as one-hot arrays of binary data, again becsuse NN
+    one_hot = vectorizer.fit_transform(ent_map_list)
+    assert vectorizer.inverse_transform(one_hot) == ent_map_list
+    return one_hot, vectorizer
+
+
+def _vectorize_by_entities(overview: Overview, nlp: NLP) -> Tuple[OneHot, Vectorizer]:
     """This does the vectorization based on the entities inside the overview.
     Basically creates a giant spreadsheet.
     One-hot encoding.
@@ -173,52 +261,66 @@ def _vectorize_by_entities(
 
     entities: List[str] = _extract_entities(overview, nlp)
 
-    # TODO: normalize `entities`
+    # TODO: normalize/clean `entities`
 
-    vectorizer = DictVectorizer(sparse=False)
+    one_hot, vectorizer = _make_entity_vectorizer(entities, "models/vocabulary.csv")
 
-    vocabulary_file = "models/vocabulary.csv"
-
-    assert os.path.isfile(
-        vocabulary_file
-    ), f"expected vocabulary file: {vocabulary_file}"
-
-    vocabulary: dict = pd.read_csv(vocabulary_file).T.to_dict()[0]
-
-    ent_map = {e: 1 for e in entities if e in vocabulary}
-
-    # in this case we only have one document: `overview`.
-    # but imagine there could be more documents, thus more predictions
-    ent_map_list: List[dict] = [ent_map]
-
-    # this encodes all numbers as one-hot arrays of binary data, again becsuse NN
-    one_hot = vectorizer.fit_transform(ent_map_list)
-
-    assert vectorizer.inverse_transform(one_hot) == ent_map_list
-
-    return one_hot
+    return one_hot, vectorizer
 
 
-def _vectorize(overview: Overview, nlp: Optional[NLP] = None) -> VectorizedInput:
+def _vectorize(overview: Overview, nlp: NLP) -> Tuple[OneHot, Vectorizer]:
     """
     Returns the input transformed into one-hot vectors via DictVectorizer
     """
     return _vectorize_by_entities(overview, nlp)
 
 
-def _predict_director_vec(input_vector: VectorizedInput) -> VectorizedOutput:
+def _is_good_one_hot_for_dict_vec(oh: OneHot, dv: DictVectorizer) -> bool:
+    """
+    TODO: ...
+    """
+    oh_is_list = type(oh) == list
+    oh_is_numpy = type(oh) == np.ndarray
+    any_of_these = oh_is_list or oh_is_numpy
+    both_of_these = len(oh) > 0 and len(oh[0]) > 0
+    is_good = any_of_these and both_of_these
+    return is_good
+
+
+def _inverse_vectorize(one_hot: OneHot, vectorizer: Vectorizer) -> List[Any]:
+    """
+    TODO: return something unambiguous
+    """
+    if isinstance(vectorizer, DictVectorizer):  # pyre-ignore[25]
+        msg = "bad one hot"
+        assert _is_good_one_hot_for_dict_vec(one_hot, vectorizer), msg
+        return vectorizer.inverse_transform(one_hot)
+    else:
+        raise NotImplementedError("non-DictVectorizer not yet implemented.")
+
+
+def _predict_director_vec(
+    input_vector: VectorizedInput, filename: str = "entities_predict_director.h5"
+) -> VectorizedOutput:
     """
     Returns the predictions of the `entities_predict_director.h5` model
     """
-    pass
+    model = load_model(filename)
+    output: VectorizedOutput = model.predict(input_vector)
+    return output
 
 
-def _predict_director(overview: Overview, nlp: Optional[NLP] = None) -> str:
+def _predict_director(overview: Overview, nlp: NLP) -> str:
     """
     Returns a director prediction from the overview.
     """
-    model_input = _vectorize(overview, nlp)
-    pass
+    mi, mv = _vectorize(overview, nlp)
+    model_input: VectorizedInput = mi
+    model_vectorizer: DictVectorizer = mv
+    model_one_hot: VectorizedOutput = _predict_director_vec(model_input)
+    predictions: List[Any] = _inverse_vectorize(model_one_hot, model_vectorizer)
+    model_output: str = str(predictions[0])
+    return model_output
 
 
 def producer(
@@ -228,6 +330,7 @@ def producer(
 
     Args:
         overview: an [`Overview`](#labs.lab1.Overview) string about the movie.
+        TODO: nlp...use_large...
 
     Returns:
         A dictionary of [`Suggestions`](#labs.lab1.Suggestions).
@@ -235,7 +338,7 @@ def producer(
     model_name = "en_core_web_lg" if use_large else "en_core_web_sm"
     nlp: NLP = spacy.load(model_name) if nlp == None else nlp
 
-    if not isinstance(nlp, spacy.language.Language):
+    if not _is_spacy(nlp):
         raise NotImplementedError("non-spacy NLP is not yet implemented")
 
     if DEBUG:
