@@ -57,3 +57,4 @@
 ## bot challenge
 * bot_challenge: are you a bot?
   - utter_iamabot
+  - action_hello_world

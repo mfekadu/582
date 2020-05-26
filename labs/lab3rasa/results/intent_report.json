@@ -6,13 +6,6 @@
     "support": 8,
     "confused_with": {}
   },
-  "greet": {
-    "precision": 1.0,
-    "recall": 1.0,
-    "f1-score": 1.0,
-    "support": 6,
-    "confused_with": {}
-  },
   "bot_challenge": {
     "precision": 1.0,
     "recall": 1.0,
@@ -35,6 +28,13 @@
     "confused_with": {}
   },
   "deny": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 6,
+    "confused_with": {}
+  },
+  "greet": {
     "precision": 1.0,
     "recall": 1.0,
     "f1-score": 1.0,
