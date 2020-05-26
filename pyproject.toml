@@ -21,6 +21,7 @@ spacy = "^2.2.4"
 numpy = "^1.18.4"
 docopt = "^0.6.2"
 sklearn = "^0.0"
+rasa = "^1.10.1"
 
 [tool.poetry.dev-dependencies]
 black = "^19.10b0"
