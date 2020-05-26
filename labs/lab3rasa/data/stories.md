@@ -20,6 +20,10 @@
   - utter_cheer_up
   - utter_did_that_help
 * deny
+  - utter_cheer_up
+  - utter_did_that_help
+* deny
+  - utter_happy
   - utter_goodbye
 
 ## say goodbye
