@@ -1,0 +1,22 @@
+{
+  "install": "echo 'installing......' && ./glitch_setup.sh && source $HOME/.poetry/env && poetry install && poetry shell",
+  "start": "PYTHONUNBUFFERED=true ./rasa_run.sh",
+  "watch": {
+    "ignore": [
+      "\\.pyc$"
+    ],
+    "install": {
+      "include": [
+        "^requirements\\.txt$",
+        "glitch_setup.sh"
+      ]
+    },
+    "restart": {
+      "include": [
+        "\\.py$",
+        "^start\\.sh"
+      ]
+    },
+    "throttle": 1000
+  }
+}
