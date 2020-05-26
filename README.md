@@ -6,32 +6,42 @@ CSC 582 Natural Language Processing
 
 ## Getting Started
 
-### 1. [Install Pipenv][2]
+### 1. [Install Poetry][2]
 
 Works with macOS, Linux, [Windows][3].
 
 ### 2. Setup virtual environment
 
 ```bash
-pipenv install
+poetry install
 ```
 
 This will create a virtual environment with the required:
 
 - [Python 3.6.8][4]
-- all the `[packages]` listed in the [`Pipfile`](./Pipfile)
+- all the `[packages]` listed in the [`pyproject.toml`](./pyproject.toml), which is [standardized][5].
 
 ### 3. Open virtual environment
 
 ```bash
-pipenv shell
+poetry shell
 ```
 
 ### 4. Verify your python version
 
 ```bash
-$ python --version
-Python 3.6.8
+$ poetry env info
+
+Virtualenv
+Python:         3.6.8
+Implementation: CPython
+Path:           /path/to/.../.../pypoetry/virtualenvs/582-Edwit1zX-py3.6
+Valid:          True
+
+System
+Platform: darwin (example on macOS)
+OS:       posix  (example on macOS)
+Python:   /Library/Frameworks/Python.framework/Versions/3.6  (example on macOS)
 ```
 
 ### 5. Download NLP stuff
@@ -97,11 +107,12 @@ $ python robotproducer.py inputs/in1.txt
 
 ## Resources
 
-- [**foobar**][5]
-- [**foobar**][5]
+- [**foobar**][6]
+- [**foobar**][6]
 
 [1]: https://mfekadu.github.io/582/
-[2]: https://pipenv.pypa.io/en/latest/install/#installing-pipenv
-[3]: https://pipenv.pypa.io/en/latest/install/#pragmatic-installation-of-pipenv
+[2]: https://python-poetry.org/docs/#installation
+[3]: https://python-poetry.org/docs/#installation
 [4]: http://python.org
-[5]: ???
+[5]: https://www.python.org/dev/peps/pep-0518/
+[6]: ????
