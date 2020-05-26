@@ -34,3 +34,8 @@
 * bot_challenge
   - utter_iamabot
   - action_hello_world
+
+## stop program
+* stop_program
+  - utter_goodbye
+  - action_stop_program

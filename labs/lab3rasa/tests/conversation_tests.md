@@ -58,3 +58,19 @@
 * bot_challenge: are you a bot?
   - utter_iamabot
   - action_hello_world
+
+
+
+<!-- hmmm.....??? -->
+## stop program
+* stop_program: die
+  - utter_goodbye
+  - action_stop_program
+
+
+<!-- i am not sure if machine learning should happen here...... -->
+<!-- maybe action_stop_progarm should handle input and verify exact string match.... -->
+<!-- ## stop program 2
+* stop_program: stop program
+  - utter_goodbye
+  - action_stop_program -->
