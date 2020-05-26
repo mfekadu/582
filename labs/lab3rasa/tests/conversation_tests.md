@@ -31,6 +31,10 @@
   - utter_cheer_up
   - utter_did_that_help
 * deny: not really
+  - utter_cheer_up
+  - utter_did_that_help
+* deny: no not at all
+  - utter_happy
   - utter_goodbye
 
 ## sad path 3
@@ -40,6 +44,10 @@
   - utter_cheer_up
   - utter_did_that_help
 * deny: no
+  - utter_cheer_up
+  - utter_did_that_help
+* deny: no not at all
+  - utter_happy
   - utter_goodbye
 
 ## say goodbye
