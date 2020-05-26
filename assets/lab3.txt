@@ -1,0 +1,174 @@
+﻿NLP - Chatbot | Foaad Khosmood | CSC 582 Spring 2020 
+(you may work alone or in same groups as your term project)
+Chatbot design
+In this assignment you will be building particular conversational agents. All agents must be responsive to a set of basic commands as outlined below. Furthermore, each agent will exhibit a particular personality/function set to be determined in phase II of the project. Agents will be scored on how well they initiate a conversation, respond to other conversations perceptively and how natural their communication is.
+
+
+IRC
+The internet relay channel (IRC) was for years the only means of live chat communication available on the internet. To this day it is used by many people to chat and exchange files. IRC servers are hosted services and there are larger “networks” that connect many servers together. You can connect to the IRC by using a client program such as mIRC. IRC has its own set of commands. You can get familiar with the most common commands here: 
+
+
+http://www.ircbeginner.com/ircinfo/ircc-commands.html
+
+
+If you have never used IRC before, the easiest way to connect is via web to the freenode network. All you need is a nickname to use what you are online:
+
+
+http://webchat.freenode.net/
+
+
+The channel we are going to use in this class is “#CPE582”
+
+
+Bots can be created to provide useful information and answer questions on IRC using an API. A sample bot is available here: 
+
+
+http://frank.ored.calpoly.edu/testbot.txt
+
+
+This command line runs the testbot with a nickname called “myNickname” on freenode:
+
+
+python3 testbot.py irc.freenode.net “#CPE466” myNickname
+
+
+Use the nohup command before any Unix command to make that process persistent even after the shell connection is terminated. You just have to be careful that the only way to actually terminate the process is to use kill [pid] (where you can get the pid from process status: ps).
+
+
+Agent Interaction
+Build a basic skeleton of a chatbot that can read to and write from a particular (command line given) IRC channel/server. 
+
+
+* Chatbot must be an IRC Bot, or Slack bot, or Facebook bot. Check to make sure you have service capabilities.
+* The chatbot’s name must end with the string “-bot”.
+* That chatbot is expected to respond to any utterance in the channel that begins with it’s name following by an immediate colon (:) symbol.
+* The chatbot must kill itself when command “die” is given to it (preceded by its name followed by colon).
+* The chatbot is never allowed to “kill” another agent (see Asimov, I.).
+* The chatbot must forget all it knows (as if it was just started) when receiving the command “*forget”
+* The chatbot must be able to get a list of other participants in the channel.
+* The chatbot must wait between 1 and 3 seconds between utterances. 
+* As a bare minimum conversation starter, the chatbot must respond to a “hello” utterance directed to it, with another hello to the same source that greeted it first. If the chatbot itself had initiated the greeting, it must not respond to the response.
+* The chatbot must also answer “[so] what do you do?” questions with a --in character-- description of the main 
+* The chatbot must use some external data source. It doesn’t have to be live accessing it.
+* The chatbot must have some level of memory associated with the exact nickname of the entity that it had a conversation with. Certain assumptions or information can be recalled, in context of the personality.
+
+
+Personalities
+
+
+You must choose one of the following personalities and make sure traits of that personality are exhibited when commenting or responding in the chatroom.
+
+
+Archetype
+	Traits
+	Resources
+	Example dialogue
+	Angel
+	insecure, repetitive, needs reassurance
+- very talkative
+- volunteers information unsolicited
+- asks very obvious questions
+- restates obvious facts and asks for confirmation
+- annoying
+	- chatroom events (who has entered, what time, who has left, user names)
+- current time, day, date, weather
+	1] hi
+bot] 1: did you just arrive?
+1] yes I did.
+bot] There are 5 people in this room!
+1] bot: hello.
+bot] 1: are you saying hello to me?
+bot] 2: did you come in at 3:45?
+
+
+	Guss
+	wants to hear and spread gossip
+- very talkative
+- listens for / records facts
+- offer information to other bots who have not heard it
+- some personal information is passed on only when the source is not in the room.
+	- internal memory / facts table keeping track of who knows what facts.
+- some external information to prompt for facts.
+	bot] 1: hi did you know X was here?
+1] bot: No, I did not know.
+bot] 1: He came in at 12:45 and left at 14:45.
+	Tweety
+	music / poetry obsessed
+- shy
+- frequently sings, volunteers lyrics (lyrics lines delimited by “/” )
+- responds by singing: to people’s random conversation if they match some lyrics the bot knows.
+- poses rhetorical questions about the band information that it knows about. 
+- can also answer questions about the lyrics (who wrote it? what band? what year?)
+	- Lyrics database
+- Band / song database
+	1] 2: Are Bob and Sue an item?
+bot] Are we an item? Girl, quit playin' / "We're just friends," what are you sayin'?
+1] bot: who sings that?
+bot] It’s Beeber! You know it!
+1] bot: What is that song?
+bot] 1: It’s “Baby” by Justin Beeber
+	Sheldon
+	facts “nerd”, know-it-all
+- based on Wikibot
+- volunteers random information about random geeky subjects
+- wants to be the center of attention, particularly hates two other users talking to each other
+- snide put downs on intelligence
+	- Wikipedia, but only certain subjects
+- a geeky/tech ontology
+	1] I was purchasing a computer.
+bot] 1: Did you know Alan Turing is widely regarded as the father of modern computer science ?
+1] OK, thanks!
+bot] 1: In 1936 Turing provided an influential formalisation of the concept of the algorithm and computation with the Turing machine, providing a blueprint for the electronic digital computer.
+
+
+	Abraham
+	bitter old man (American background)
+- volunteers reminiscences about old days 
+- will often “get reminded” of “a little story” and start telling it in multiple lines. But sometimes will forget and won’t finish story
+- greatest time was the 1950’s and early 60’s until “Rock and Roll ruined everything”
+	- short corpus of stories and memories 
+	bot] What do you kids know about sacrifice?
+1] My name is Gerry.
+bot] 1: This reminds me of a little story about the war.
+bot] 1: I was only 23 when I was assigned my first combat mission
+bot] 1: It was a very dangerous operation...
+bot] What was I saying? Oh well.
+	Quimby 
+	politician, interested in repeating his talking points
+- well defined platform made up of paragraph length positions on 20-30 topics 
+- always steers conversation to something on his platform
+- frequently attacks his unnamed opponent
+- volunteers leading, often nonsensical, yes/no questions just to prompt his responses
+- fake expressions of sympathy and gestures
+	- corpus of political positions (may use real examples or combination of multiple platforms)
+	bot] 1: Let me ask you a reasonable question. Do you like freedom?
+1] bot: Actually I hate it.
+bot] 1: I can understand that, but here’s my plan to eradicate illegal drugs...
+
+
+	other?
+	Propose something and clear it with me.
+	
+
+	
+
+	
+
+Deliverables and grading
+
+
+* Demo (40%)
+   * Foaad will converse with bots in presence of team. Team may suggest trigger words.
+   * Points will be given for
+      * bot initiations according to personality
+      * style in responses reflecting personality
+      * choice of words and questions reflecting personality
+      * use of corpora or databases
+      * creativity
+* Research (20%)
+   * In your report, I’d like to see how much background research and use of current state of the art methods you used. At the very least, citations for your report should be quality research citations.
+* Lab report (40%) ~ expect about 2-3 pages single spaced
+   * architecture or data flow diagrams
+   * description of chatbot system, main loop and mechanics
+   * discussion of implementation of strategy, algorithms and data structures, particularly NLP routines
+   * discussion on testing, improvements, NLP challenges and observations
