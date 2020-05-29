@@ -35,6 +35,7 @@
   - utter_iamabot
   - action_hello_world
 
+<!-- only die via `/die` command, else will die on "di" and "de" and "dies" -->
 ## stop program
 * die
   - utter_goodbye
