@@ -55,7 +55,5 @@
 - am I talking to a bot?
 - am I talking to a human?
 
-## intent:stop_program
+## intent:die
 - die
-- descend into the unknown
-- step into your own grave

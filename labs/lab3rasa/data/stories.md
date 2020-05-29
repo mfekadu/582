@@ -36,6 +36,6 @@
   - action_hello_world
 
 ## stop program
-* stop_program
+* die
   - utter_goodbye
   - action_stop_program
