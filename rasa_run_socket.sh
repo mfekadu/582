@@ -20,4 +20,6 @@ rasa run -vv \
     --verbose \
     --endpoints labs/lab3rasa/endpoints.yml \
     --debug \
+    --enable-api \
+    --connector socketio --cors "*" \
     $1 $2 $3 $4 $5 $6
