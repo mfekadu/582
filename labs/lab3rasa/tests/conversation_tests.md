@@ -59,18 +59,8 @@
   - utter_iamabot
   - action_hello_world
 
-
-
-<!-- hmmm.....??? -->
+<!-- only die via `/die` command, else will die on "di" and "de" and "dies" -->
 ## stop program
-* stop_program: die
+* die: /die
   - utter_goodbye
   - action_stop_program
-
-
-<!-- i am not sure if machine learning should happen here...... -->
-<!-- maybe action_stop_progarm should handle input and verify exact string match.... -->
-<!-- ## stop program 2
-* stop_program: stop program
-  - utter_goodbye
-  - action_stop_program -->

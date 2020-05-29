@@ -13,15 +13,42 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 
 
-class ActionHelloWorld(Action):
+SUCCESS = 0
+FAILURE = 1
 
+
+class ActionHelloWorld(Action):
     def name(self) -> Text:
         return "action_hello_world"
 
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict[Text, Any]]:
 
         dispatcher.utter_message(text="HELLO WORLD!!!!! the action is running")
+
+        return []
+
+
+class ActionStopProgram(Action):
+    def name(self) -> Text:
+        return "action_stop_program"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict[Text, Any]]:
+
+        # FIXME: saying goodbye for now will suffice
+        dispatcher.utter_message(text="Goodbye cruel world!")
+
+        # FIXME: this would only exit the `action server` not the whole rasa...
+        # TODO: consider callbacks?
+        # exit(SUCCESS)
 
         return []
