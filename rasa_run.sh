@@ -20,4 +20,4 @@ rasa run -vv \
     --verbose \
     --endpoints labs/lab3rasa/endpoints.yml \
     --debug \
-    $1
+    $1 $2 $3
