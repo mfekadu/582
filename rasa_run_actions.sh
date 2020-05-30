@@ -6,4 +6,4 @@
 rasa run -vv actions \
     --actions labs.lab3rasa.actions \
     --debug \
-    $1
+    "$@"
